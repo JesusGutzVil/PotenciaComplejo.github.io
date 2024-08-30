@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Potencia De Complejos</title>
+    <style>
+        body{
+            background-color: black;
+            display: flex;
+            justify-content: center;
+        }
+        .contenedor{
+            width: 300px;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 10px;
+            background-color: gray;
+            box-shadow: 5px 5px 10px rgb(255, 255, 255);
+        }
+        .pantalla{
+            background-color: rgb(253, 0, 0);
+            display: flex;
+            border-radius: 10px;
+            justify-content: center;
+            margin: 5px;
+            box-shadow: 1px 1px 3px 1px rgb(13, 0, 0);
+        }
+        .teclado{
+            height: 300px;
+            padding: 5px;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+        }
+        button{
+            border-radius: 10px;
+            background-color: rgb(0, 0, 0);
+            color: white;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            font-size: 1.5em;
+        }
+        input{
+            width: 100%;
+            height: 70px;
+            border-radius: 10px;
+            text-align: right;
+            font-size: 2.5em;
+            padding-right: 20px;
+        }
+        button:hover{
+            color: black;
+            background-color: white;
+            box-shadow: 1px 1px 3px 1px rgb(13, 0, 0);
+        }
+        button:active{
+            transform: scale(0.99);
+            background-color: rgb(255, 243, 229);
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="pantalla">
+            <input type="text" id="resultado" value="" readonly>
+        </div>
+        <div class="teclado">
+            <button type="button">7</button>
+            <button type="button">8</button>
+            <button type="button">9</button>
+            <button type="button">4</button>
+            <button type="button">5</button>
+            <button type="button">6</button>
+            <button type="button">1</button>
+            <button type="button">2</button>
+            <button type="button">3</button>
+            <button type="button">0</button>
+            <button type="button">=</button>
+            <button type="button">C</button>
+        </div>
+    </div>
+
+    <script>
+        const resultado = document.getElementById('resultado');
+        let resultadoMostrado = false;
+
+        function agregarNumero(numero) {
+            if (resultadoMostrado) {
+                resultado.value = '';
+                resultadoMostrado = false;
+            }
+            resultado.value += numero;
+        }
+
+        function calcularComplejo() {
+            const num = parseInt(resultado.value, 10);
+            const res = num % 4;
+            let resultadoComplejo = '';
+
+            if (res === 1) {
+                resultadoComplejo = 'i';
+            } else if (res === 2) {
+                resultadoComplejo = '-1';
+            } else if (res === 3) {
+                resultadoComplejo = '-i';
+            } else if (res === 0) {
+                resultadoComplejo = '1';
+            }
+
+            resultado.value = `${resultadoComplejo}`;
+            resultadoMostrado = true;
+        }
+
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+            if (!isNaN(key)) {
+                agregarNumero(key);
+            }
+        });
+
+        const botones = document.querySelectorAll('.teclado button');
+        botones.forEach(boton => {
+            boton.addEventListener('click', function() {
+                const valor = this.textContent;
+                if (!isNaN(valor)) {
+                    agregarNumero(valor);
+                } else if (valor === 'C') {
+                    resultado.value = '';
+                    resultadoMostrado = false;
+                } else if (valor === '=') {
+                    calcularComplejo();
+                }
+            });
+        });
+
+    </script>
+
+</body>
+</html>
